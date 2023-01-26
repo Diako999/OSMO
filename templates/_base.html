@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>A deep dive into OSMOSIS(Osmo)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="MyraStudio" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+    
+        <!-- App css -->
+        <link href="{% static 'assets/css/bootstrap.min.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/css/theme.min.css' %}" rel="stylesheet" type="text/css" />
+    
+    </head>
+    <body>
+        <div id="layout-wrapper">
+            {% block header %}
+                 {% include  '_header.html' %}
+            {% endblock header %}
+            {% block sidebar %}
+                {% include  '_l_sidebar.html' %}
+            {% endblock sidebar %}
+            {% block content %}
+            
+            
+                {% block footer %}
+                    {% include '_footer.html' %}
+                {% endblock footer %}
+            {% endblock content %}
+
+
+        </div>
+
+
+        <div class="menu-overlay"></div>
+        <script src="" async defer></script>
+ <!-- jQuery  -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/metismenu.min.js' %}"></script>
+    <script src="{% static 'assets/js/waves.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.min.js' %}"></script>
+
+    <!-- Sparkline Js-->
+    <script src="{% static 'plugins/jquery-sparkline/jquery.sparkline.min.js'%}"></script>
+
+    <!-- Chart Js-->
+    <script src="{% static 'plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+
+    <!-- Morris Js-->
+    <script src="{% static 'plugins/morris-js/morris.min.js' %}"></script>
+    <!-- Raphael Js-->
+    <script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+
+    <!-- Custom Js -->
+    <script src="{% static 'assets/pages/dashboard-demo.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'assets/js/theme.js' %}"></script>
+    </body>
+</html>
