@@ -2,17 +2,14 @@ from django.shortcuts import render
 import json
 from shroomdk import ShroomDK
 from django.views.generic import TemplateView
+from .queries import *
 # Create your views here.
 
-
+sdk = ShroomDK("24e83f37-c226-4a4d-b494-c7276440ef76")
 def HomeView(request):
-     
-     sdk = ShroomDK("24e83f37-c226-4a4d-b494-c7276440ef76")
-     sql = f"""
-               select count(distinct (block_id)) as blocks, sum(tx_count) as transactions from osmosis.core.fact_blocks
-            """
-     pools = """ select count(distinct(pool_id)) as number_of_pools from osmosis.core.dim_liquidity_pools """
-     supply = """  select sum(amount) as total_supply from osmosis.core.fact_transfers """
+     sql = blocks_transactions
+     pools = liquidity_pools
+     supply = total_supply
      pools_result = sdk.query(pools)
      supply_result = sdk.query(supply)
      query_result_set = sdk.query(sql)

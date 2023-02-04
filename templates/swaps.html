@@ -1,0 +1,297 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}<title>Swaps</title>{% endblock title %}
+{% block content %}
+    
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">Swaps</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                                        <li class="breadcrumb-item active">Swaps</li>
+                                    </ol>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>     
+                    <!-- end page title -->
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                    
+                                    <h4 class="card-title">Transactions</h4>
+                                    <p class="card-subtitle mb-4">transactions</p>
+
+                                    <div id="chart"></div>
+                    
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                    
+                                    <h4 class="card-title">max_amount_from</h4>
+                                    <p class="card-subtitle mb-4">max_amount_from</p>
+
+                                    <div id="max-amount-from"></div>
+                    
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                
+                                <h4 class="card-title">max_amount_to</h4>
+                                <p class="card-subtitle mb-4">max_amount_to</p>
+
+                                <div id="max-amount-to"></div>
+                
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-12">
+                      <div class="card">
+                          <div class="card-body">
+              
+                              <h4 class="card-title">Avg_amount</h4>
+                              <p class="card-subtitle mb-4">Avg_amount</p>
+
+                              <div id="avg-amount"></div>
+              
+                          </div> <!-- end card-body-->
+                      </div> <!-- end card-->
+                  </div>
+              </div>
+              </div>
+              </div>
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+            
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+{% endblock content %}
+
+
+{% block charts %}
+<script>
+    var options = {
+        series: [{
+        name: 'Net Profit',
+        data: [{% for item in transactions %}{{item}},{% endfor %}]
+      }],
+        chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+        categories: {{labels|safe}},
+      },
+      yaxis: {
+        title: {
+          text: '$ (thousands)'
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands"
+          }
+        }
+      }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+    
+    {% comment %} amounts max {% endcomment %}
+    var options = {
+      series: [{
+      name: 'Amount',
+      data: [{% for item in from_amount_max %} {{item}}, {% endfor %}]
+    }],
+      annotations: {
+      points: [{
+        x: 'date',
+        seriesIndex: 0,
+        label: {
+          borderColor: '#775DD0',
+          offsetY: 0,
+          style: {
+            color: '#fff',
+            background: '#775DD0',
+          },
+          text: '',
+        }
+      }]
+    },
+    chart: {
+      height: 350,
+      type: 'bar',
+    },
+    plotOptions: {
+      bar: {
+        borderRadius: 10,
+        columnWidth: '50%',
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      width: 2
+    },
+    
+    grid: {
+      row: {
+        colors: ['#fff', '#f2f2f2']
+      }
+    },
+    xaxis: {
+      labels: {
+        rotate: -45
+      },
+      categories: {{labels|safe}},
+      tickPlacement: 'on'
+    },
+    yaxis: {
+      title: {
+        text: 'Amount',
+      },
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'light',
+        type: "horizontal",
+        shadeIntensity: 0.25,
+        gradientToColors: undefined,
+        inverseColors: true,
+        opacityFrom: 0.85,
+        opacityTo: 0.85,
+        stops: [50, 0, 100]
+      },
+    }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#max-amount-from"), options);
+    chart.render();
+  {% comment %} amount to {% endcomment %}
+  var options = {
+    series: [{
+    data: [{% for item in to_amount_max %} {{item}}, {% endfor %}]
+  }],
+    chart: {
+    type: 'line',
+    height: 400
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: {{ labels|safe }}
+  }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#max-amount-to"), options);
+  chart.render();
+  {% comment %} avg_stats {% endcomment %}
+  var options = {
+    series: [{
+    name: 'From_amount_avg',
+    type: 'column',
+    data: [{% for item in from_amount_avg %} {{item}}, {% endfor %}]
+  }, {
+    name: 'To_amount_avg',
+    type: 'line',
+    data: [{% for i in to_amount_avg %} {{i}}, {% endfor %}]
+  }],
+    chart: {
+    height: 350,
+    type: 'line',
+  },
+  stroke: {
+    width: [0, 4]
+  },
+  title: {
+    text: 'Traffic Sources'
+  },
+  dataLabels: {
+    enabled: true,
+    enabledOnSeries: [1]
+  },
+  labels: {{labels|safe}},
+  xaxis: {
+    type: 'datetime'
+  },
+  yaxis: [{
+    title: {
+      text: 'From_amount_avg',
+    },
+  
+  }, {
+    opposite: true,
+    title: {
+      text: 'To_amount_avg'
+    }
+  }]
+  };
+
+  var chart = new ApexCharts(document.querySelector("#avg-amount"), options);
+  chart.render();
+</script>
+
+{% endblock charts %}

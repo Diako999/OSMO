@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',
+    'transactions.apps.TransactionsConfig',
+    'staking.apps.StakingConfig',
+    'swaps.apps.SwapsConfig',
+    'airdrops.apps.AirdropsConfig',
+    'prices.apps.PricesConfig',
 ]
 
 MIDDLEWARE = [
