@@ -1,6 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
-{% block title %}<title>Transactions</title>{% endblock title %}
+{% block title %}<title>Staking</title>{% endblock title %}
 {% block content %}
     
         <!-- ============================================================== -->
@@ -17,17 +17,58 @@
                             <div class="page-title-box d-flex align-items-center justify-content-between">
                                 <h4 class="mb-0 font-size-18">Transactions</h4>
 
-                                <div class="page-title-right">
-                                    <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
-                                        <li class="breadcrumb-item active">Transactions</li>
-                                    </ol>
-                                </div>
+                                  <div class="page-title-right">
+                                      <ol class="breadcrumb m-0">
+                                          <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                                          <li class="breadcrumb-item active">Transactions</li>
+                                      </ol>
+                                  </div>
                                 
                             </div>
                         </div>
                     </div>     
                     <!-- end page title -->
+                    <div class="row" > 
+                      <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                
+                                <h4 class="card-title">transactions</h4>
+                                <p class="card-subtitle mb-4">transactions</p>
+
+                                <div id="transactions"></div>
+                
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                      </div>
+
+                    </div>
+                    <div class="row" > 
+                      <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                
+                                <h4 class="card-title">actions</h4>
+                                <p class="card-subtitle mb-4">actions</p>
+
+                                <div id="actions"></div>
+                
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                
+                                <h4 class="card-title">rewards</h4>
+                                <p class="card-subtitle mb-4">rewards</p>
+
+                                <div id="rewards"></div>
+                
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                      </div>
+                    </div>
               </div>
                 </div> <!-- container-fluid -->
             </div>
@@ -47,281 +88,147 @@
 {% block charts %}
 <script>
   
-    if ($('#transactions-tx-count-bar-chart').length) {
-        var barChartCanvas = $("#transactions-tx-count-bar-chart").get(0).getContext("2d");
-        var data = {
-          labels: {{ labels|safe }},
-          type:'datetime',
-          datasets: [
-            {
-              label: 'Transactions',
-              data: [{% for item in tx_count %} {{ item }}, {% endfor %}],
-              borderColor: [
-                '#2e7ce4'
-              ],
-              borderWidth: 3,
-              fill: true,
-              pointBackgroundColor: "#33FF00",
-              pointBorderColor: "#33FF00"
-            }
-          ]
-        };
-        var options = {
-          scales: {
-            yAxes: [{
-              gridLines: {
-                drawBorder: true,
-                borderDash: [3, 3]
-              },
-              ticks: {
-                min: 0
-              },
-            }],
-            xAxes: [{
-              gridLines: {
-                display: false,
-                drawBorder: false,
-                color: "#33FF00"
-              }
-            }]
-          },
-          elements: {
-            line: {
-              tension: 0.2
-            },
-            point: {
-              radius: 4
-            }
-          },
-          stepsize: 1
-        };
-        var barChart = new Chart(barChartCanvas, {
-          type: 'bar',
-          data: data,
-          options: options
-        });
+  var options = {
+    series: [{
+    name: 'transactions',
+    data: [{% for item in transactions %}{{item}},{% endfor %}]
+  }],
+    chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '55%',
+      endingShape: 'rounded'
+    },
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ['transparent']
+  },
+  xaxis: {
+    categories: {{labels|safe}},
+  },
+  yaxis: {
+    title: {
+      text: '$ (thousands)'
+    }
+  },
+  fill: {
+    opacity: 1
+  },
+  tooltip: {
+    y: {
+      formatter: function (val) {
+        return "$ " + val + " thousands"
       }
-      if ($('#cum-tx-line-chart').length) {
-        var lineChartCanvas = $("#cum-tx-line-chart").get(0).getContext("2d");
-        var data = {
-          labels: {{labels|safe}},
-          datasets: [
-            {
-              label: 'cum_tx',
-              data: [{% for item in cum_tx %} {{item}}, {% endfor %}],
-              borderColor: [
-                '#003300'
-              ],
-              borderWidth: 3,
-              fill: true,
-              pointBackgroundColor: "#330000",
-              pointBorderColor: "#2e7ce4"
-            },
-          ]
-        };
-        var options = {
-          scales: {
-            yAxes: [{
-              gridLines: {
-                drawBorder: false,
-                borderDash: [3, 3]
-              },
-              ticks: {
-                min: 0
-              },
-            }],
-            xAxes: [{
-              gridLines: {
-                display: true,
-                drawBorder: false,
-                color: "#ffffff"
-              }
-            }]
-          },
-          elements: {
-            line: {
-              tension: 0.2
-            },
-            point: {
-              radius: 4
-            }
-          },
-          stepsize: 1
-        };
-        var lineChart = new Chart(lineChartCanvas, {
-          type: 'line',
-          data: data,
-          options: options
-        });
+    }
+  }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#transactions"), options);
+  chart.render();
+
+  var options = {
+    series: [{% for item in transactions %} {{item}}, {% endfor %}],
+    chart: {
+    width: 450,
+    type: 'pie',
+  },
+  labels: {{action|safe}},
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 200
+      },
+      legend: {
+        position: 'bottom'
       }
-      if ($("#number_of_blocks").length) {
-        var areaData = {
-          labels: {{labels|safe}},
-          datasets: [{
-              data: [{% for item in number_of_blocks %} {{item}}, {% endfor %}],
-              backgroundColor: [
-                '#990033'
-              ],
-              borderColor: [
-                '#38b3d6'
-              ],
-              borderWidth: 1,
-              fill: 'origin',
-              label: "blocks"
-            }
-          ]
-        };
-        var areaOptions = {
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: {
-            filler: {
-              propagate: false
-            }
-          },
-          scales: {
-            xAxes: [{
-              gridLines: {
-                display: false,
-                drawBorder: false,
-                color: 'transparent',
-                zeroLineColor: '#990033'
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                drawBorder: false,
-                borderDash: [3, 3]
-              },
-            }]
-          },
-          legend: {
-            display: false
-          },
-          tooltips: {
-            enabled: true
-          },
-          elements: {
-            line: {
-              tension: 0
-            },
-            point: {
-              radius: 0
-            }
-          }
-        }
-        var salesChartCanvas = $("#number_of_blocks").get(0).getContext("2d");
-        var salesChart = new Chart(salesChartCanvas, {
-          type: 'line',
-          data: areaData,
-          options: areaOptions
-        });
+    }
+  }]
+  };
+
+  var chart = new ApexCharts(document.querySelector("#actions"), options);
+  chart.render();
+
+  var options = {
+    series: [{
+    name: 'amount',
+    data: [{% for item in reward_amount %} {{item}}, {% endfor %}]
+  }],
+    annotations: {
+    points: [{
+      x: 'rewards',
+      seriesIndex: 0,
+      label: {
+        borderColor: '#775DD0',
+        offsetY: 0,
+        style: {
+          color: '#8B0000',
+          background: '#8B0000',
+        },
+        text: 'amount-airdropped',
       }
-      if ($("#avg_min_max").length) {
-        var currentChartCanvas = $("#avg_min_max").get(0).getContext("2d");
-        var currentChart = new Chart(currentChartCanvas, {
-          type: 'bar',
-          data: {
-            labels: {{labels|safe}},
-            datasets: [{
-                label: 'Average-gas-used',
-                data: [{% for item in average_gas_used %} {{item}}, {% endfor %}],
-                backgroundColor: '#FF0000'
-              },
-              {
-                label: 'Minimum-gas-used',
-                data: [{% for item in min_gas_used %} {{item}}, {% endfor %}],
-                backgroundColor: '#500000'
-              },
-              {
-                label: 'Maximum-gas-used',
-                data: [{% for item in maximum_gas_used %} {{item}}, {% endfor %}],
-                backgroundColor: '#FF00FF'
-              },
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            
-            scales: {
-              yAxes: [{
-                display: false,
-                gridLines: {
-                  drawBorder: false,
-                },
-                ticks: {
-                  fontColor: "#686868"
-                }
-              }],
-              xAxes: [{
-                ticks: {
-                  fontColor: "#686868"
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }]
-            },
-            elements: {
-              point: {
-                radius: 0
-              }
-            }
-          }
-        });
-      }
-      if ($("#avg-peak-tps").length) {
-        var currentChartCanvas = $("#avg-peak-tps").get(0).getContext("2d");
-        var currentChart = new Chart(currentChartCanvas, {
-          type: 'bar',
-          data: {
-            labels: {{labels|safe}},
-            datasets: [{
-                label: 'Average-tps',
-                data: [{% for item in average_tps %} {{item}}, {% endfor %}],
-                backgroundColor: '#FFD700'
-              },
-              {
-                label: 'Peak-tps',
-                data: [{% for item in peak_tps %} {{item}}, {% endfor %}],
-                backgroundColor: '#228B22'
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            
-            scales: {
-              yAxes: [{
-                display: false,
-                gridLines: {
-                  drawBorder: false,
-                },
-                ticks: {
-                  fontColor: "#686868"
-                }
-              }],
-              xAxes: [{
-                ticks: {
-                  fontColor: "#686868"
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }]
-            },
-            elements: {
-              point: {
-                radius: 0
-              }
-            }
-          }
-        });
-      }
+    }]
+  },
+  chart: {
+    height: 350,
+    type: 'bar',
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 10,
+      columnWidth: '50%',
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    width: 2
+  },
+  
+  grid: {
+    row: {
+      colors: ['#f0f0f0', '#f0f0f0']
+    }
+  },
+  xaxis: {
+    labels: {
+      rotate: -45
+    },
+    categories: {{date|safe}},
+    tickPlacement: 'on'
+  },
+  yaxis: {
+    title: {
+      text: 'amount',
+    },
+  },
+  fill: {
+    type: 'gradient',
+    gradient: {
+      shade: 'light',
+      type: "horizontal",
+      shadeIntensity: 0.25,
+      gradientToColors: undefined,
+      inverseColors: true,
+      opacityFrom: 0.85,
+      opacityTo: 0.85,
+      stops: [50, 0, 100]
+    },
+  }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#rewards"), options);
+  chart.render();
 </script>
 
 {% endblock charts %}

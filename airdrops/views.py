@@ -10,4 +10,16 @@ raw_data = query_result_set.records
 data = raw_data
 
 def airdropsView(request):
-    pass
+    labels= []
+    amount_airdropped = []
+    transactions =[]
+    number_of_receiver= []
+
+    for item in data:
+        labels.append(item['date'])
+        amount_airdropped.append(item['amount_airdropped'])
+        transactions.append(item['transactions'])
+        number_of_receiver.append(item['number_of_receiver'])
+
+    context = {'amount_airdropped': amount_airdropped, 'labels': labels, 'transactions': transactions, 'number_of_receiver': number_of_receiver}
+    return render(request, 'airdrops.html', context)

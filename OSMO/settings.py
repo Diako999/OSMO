@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'staking.apps.StakingConfig',
     'swaps.apps.SwapsConfig',
     'airdrops.apps.AirdropsConfig',
-    'prices.apps.PricesConfig',
 ]
 
 MIDDLEWARE = [

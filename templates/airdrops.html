@@ -1,0 +1,294 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}<title>Airdrops</title>{% endblock title %}
+{% block content %}
+        
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">Prices</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                                        <li class="breadcrumb-item active">Prices</li>
+                                    </ol>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>     
+                    <!-- end page title -->
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Airdrops</h4>
+                                    <p class="card-subtitle mb-4">Airdrops</p>
+
+                                    <div id="transactions"></div>
+                    
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+                                                
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Airdrops Polar</h4>
+                                    <p class="card-subtitle mb-4">Airdrops</p>
+
+                                    <div id="transactions-polar"></div>
+                    
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Airdrops</h4>
+                                    <p class="card-subtitle mb-4">Airdrops</p>
+
+                                    <div id="amount"></div>
+                    
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+                                                
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">receivers</h4>
+                                    <p class="card-subtitle mb-4">number of receivers</p>
+
+                                    <div id="num-receiver"></div>
+                    
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+
+                    </div>
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+            
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+{% endblock content %}
+
+
+{% block charts %}
+<script>
+      
+    var options = {
+        series: [{
+        data: [{% for item in transactions %} {{item}}, {% endfor %}]
+      }],
+        chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: {{labels|safe}}
+      }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#transactions"), options);
+      chart.render();
+    {% comment %} transactions polar {% endcomment %}
+    var options = {
+        series: [{% for item in transactions %} {{item}}, {% endfor %}],
+        chart: {
+        width: 450,
+        type: 'pie',
+      },
+      labels: {{labels|safe}},
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
+      };
+
+      var chart = new ApexCharts(document.querySelector("#transactions-polar"), options);
+      chart.render();
+      {% comment %} amount and number of receivers {% endcomment %}
+      var options = {
+        series: [{
+        name: 'amount',
+        data: [{% for item in amount_airdropped %} {{item}}, {% endfor %}]
+      }],
+        annotations: {
+        points: [{
+          x: 'airdrops',
+          seriesIndex: 0,
+          label: {
+            borderColor: '#775DD0',
+            offsetY: 0,
+            style: {
+              color: '#8B0000',
+              background: '#8B0000',
+            },
+            text: 'amount-airdropped',
+          }
+        }]
+      },
+      chart: {
+        height: 350,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: '50%',
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 2
+      },
+      
+      grid: {
+        row: {
+          colors: ['#8B0000', '#8B0000']
+        }
+      },
+      xaxis: {
+        labels: {
+          rotate: -45
+        },
+        categories: {{labels|safe}},
+        tickPlacement: 'on'
+      },
+      yaxis: {
+        title: {
+          text: 'amount',
+        },
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100]
+        },
+      }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#amount"), options);
+      chart.render();
+      var options = {
+        series: [{
+        name: 'receivers',
+        data: [{% for item in number_of_receiver %} {{item}}, {% endfor %}]
+      }],
+        annotations: {
+        points: [{
+          x: 'receivers',
+          seriesIndex: 0,
+          label: {
+            borderColor: '#775DD0',
+            offsetY: 0,
+            style: {
+              color: '#fff',
+              background: '#775DD0',
+            },
+            text: 'number of receivers',
+          }
+        }]
+      },
+      chart: {
+        height: 350,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: '50%',
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 2
+      },
+      
+      grid: {
+        row: {
+          colors: ['#fff', '#f2f2f2']
+        }
+      },
+      xaxis: {
+        labels: {
+          rotate: -45
+        },
+        categories: {{labels|safe}},
+        tickPlacement: 'on'
+      },
+      yaxis: {
+        title: {
+          text: 'receivers',
+        },
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100]
+        },
+      }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#num-receiver"), options);
+      chart.render();
+
+
+</script>
+
+{% endblock charts %}

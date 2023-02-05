@@ -8,5 +8,4 @@ urlpatterns = [
     path('staking/', include('staking.urls')),
     path('swaps/', include('swaps.urls')),
     path('airdrops/', include('airdrops.urls')),
-    path('prices/', include('prices.urls')),
 ]

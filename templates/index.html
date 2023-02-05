@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
+{% load l10n %}
 {% block content %}
 <!-- Begin page -->
         <!-- ============================================================== -->
@@ -27,7 +28,46 @@
                         </div>
                     </div>     
                     <!-- end page title -->
-
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                                    <div class="card-header">Supply</div>
+                                    <div class="card-body">
+                                      <h5 class="card-title">total number of supply</h5>
+                                      <p class="card-text">{{supply|localize}}</p>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                                    <div class="card-header">Transactions</div>
+                                    <div class="card-body">
+                                      <h5 class="card-title">transactions</h5>
+                                      <p class="card-text">{{transactions|localize}}</p>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                                    <div class="card-header">Blocks</div>
+                                    <div class="card-body">
+                                      <h5 class="card-title">number of blocks</h5>
+                                      <p class="card-text">{{blocks|localize}}</p>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                                    <div class="card-header">Pools</div>
+                                    <div class="card-body">
+                                      <h5 class="card-title">number of pools</h5>
+                                      <p class="card-text">{{ num_of_pools|localize }}</p>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xl-3">
                             
