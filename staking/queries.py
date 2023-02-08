@@ -14,7 +14,7 @@ currency as currency
 from osmosis.core.fact_staking_rewards
 where tx_succeeded = True
 group by date,action,currency
-order by date desc
+order by date asc
 """
 
 weekly_staking_stats = f"""
@@ -25,5 +25,6 @@ weekly_staking_stats = f"""
     from osmosis.core.fact_staking
       where tx_succeeded = True
     group by date, action
+    order by date asc
 
 """

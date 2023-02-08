@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .queries import *
 from shroomdk import ShroomDK
 
-sdk = ShroomDK("24e83f37-c226-4a4d-b494-c7276440ef76")
+sdk = ShroomDK("4a357978-d9d9-4ba7-995e-6b60fdad9051")
 osmo_staking = weekly_staking_stats
 staking_reward = osmo_staking_rewards
 query_result_set = sdk.query(osmo_staking,

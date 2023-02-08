@@ -5,7 +5,7 @@ from shroomdk import ShroomDK
 from django.views.generic import TemplateView
 from pages.queries import *
 # Create your views here.
-sdk = ShroomDK("24e83f37-c226-4a4d-b494-c7276440ef76")
+sdk = ShroomDK("4a357978-d9d9-4ba7-995e-6b60fdad9051")
 transactions_stats = transactions
 query_result_set = sdk.query(transactions_stats,
                             ttl_minutes=60,cached=True,timeout_minutes=20,retry_interval_seconds=1,page_number=1)

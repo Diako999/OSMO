@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from .queries import *
 # Create your views here.
 
-sdk = ShroomDK("24e83f37-c226-4a4d-b494-c7276440ef76")
+sdk = ShroomDK("4a357978-d9d9-4ba7-995e-6b60fdad9051")
 def HomeView(request):
      sql = blocks_transactions
      pools = liquidity_pools

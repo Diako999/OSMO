@@ -8,5 +8,5 @@ swaps_stats = f"""
     from osmosis.core.fact_swaps
     where to_currency like '%ibc%' and from_currency = 'uosmo'
     group by date
-    order by date desc
+    order by date asc
 """
